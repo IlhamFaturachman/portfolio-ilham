@@ -80,8 +80,9 @@ export const Portfolio = () => (
     <div className="container">
       <h2 className="section-title">Portofolio Saya</h2>
       <div className="portfolio-grid">
-        {portfolioData.map(project => (
-          <PortfolioCard key={project.id} {...project} />
+        {/* FIX: Destructure `id` for the key and spread the rest of the project properties. This prevents passing the `id` prop to PortfolioCard, which does not expect it. */}
+        {portfolioData.map(({ id, ...project }) => (
+          <PortfolioCard key={id} {...project} />
         ))}
       </div>
     </div>
