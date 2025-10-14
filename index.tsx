@@ -43,6 +43,7 @@ function App() {
   const [isFading, setIsFading] = React.useState(false);
 
   React.useEffect(() => {
+    // Splash screen timers
     const fadeTimer = setTimeout(() => {
       setIsFading(true);
     }, 2500);
@@ -50,6 +51,74 @@ function App() {
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
+    
+    // Particles.js initialization
+    const tsParticles = (window as any).tsParticles;
+    if (tsParticles) {
+      tsParticles.load({
+        id: "particles-background",
+        options: {
+          fpsLimit: 60,
+          interactivity: {
+            events: {
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+            },
+            modes: {
+              push: {
+                quantity: 4,
+              },
+              repulse: {
+                distance: 150,
+                duration: 0.4,
+              },
+            },
+          },
+          particles: {
+            color: {
+              value: "#a0a0a0",
+            },
+            links: {
+              color: "#a0a0a0",
+              distance: 150,
+              enable: true,
+              opacity: 0.4,
+              width: 1,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: "out",
+              random: false,
+              speed: 2,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+              },
+              value: 80,
+            },
+            opacity: {
+              value: 0.5,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 1, max: 4 },
+            },
+          },
+          detectRetina: true,
+        },
+      });
+    }
 
     return () => {
       clearTimeout(fadeTimer);

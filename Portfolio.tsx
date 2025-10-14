@@ -80,9 +80,16 @@ export const Portfolio = () => (
     <div className="container">
       <h2 className="section-title">Portofolio Saya</h2>
       <div className="portfolio-grid">
-        {/* FIX: Destructure `id` for the key and spread the rest of the project properties. This prevents passing the `id` prop to PortfolioCard, which does not expect it. */}
-        {portfolioData.map(({ id, ...project }) => (
-          <PortfolioCard key={id} {...project} />
+        {/* FIX: Explicitly pass props to PortfolioCard to avoid potential type inference issues with the spread operator. */}
+        {portfolioData.map((project) => (
+          <PortfolioCard
+            key={project.id}
+            title={project.title}
+            description={project.description}
+            imageUrl={project.imageUrl}
+            liveLink={project.liveLink}
+            repoLink={project.repoLink}
+          />
         ))}
       </div>
     </div>
