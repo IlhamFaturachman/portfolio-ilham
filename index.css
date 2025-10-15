@@ -23,16 +23,23 @@ body {
   background-color: var(--background-color);
   color: var(--text-primary);
   line-height: 1.6;
+  
+  /* --- Latar Belakang Interaktif Baru --- */
+  background: 
+    radial-gradient(
+      600px circle at var(--mouse-x, 100px) var(--mouse-y, 100px),
+      rgba(3, 218, 198, 0.15),
+      transparent 40%
+    ),
+    linear-gradient(135deg, #100a1c, #121212, #051412);
+  background-size: 200% 200%;
+  animation: gradient-animation 15s ease infinite;
 }
 
-/* Particles Background */
-#particles-background {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: -1; /* Place it behind all other content */
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 
@@ -96,6 +103,12 @@ body {
   align-items: center;
   text-align: center;
   padding: 0 1rem;
+  background: transparent; /* Pastikan hero transparan untuk menunjukkan latar belakang body */
+}
+
+.hero > * {
+  position: relative;
+  z-index: 2;
 }
 
 .hero h1 {
@@ -116,6 +129,20 @@ body {
 /* Section Styling */
 section {
   padding: 6rem 0;
+  position: relative;
+}
+
+section .container {
+  position: relative;
+  z-index: 2;
+}
+
+#portfolio {
+    background-color: transparent; /* Pastikan portofolio transparan */
+}
+
+#about, #contact {
+  background-color: var(--surface-color);
 }
 
 .section-title {

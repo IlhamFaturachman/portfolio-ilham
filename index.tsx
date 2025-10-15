@@ -51,80 +51,28 @@ function App() {
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
-    
-    // Particles.js initialization
-    const tsParticles = (window as any).tsParticles;
-    if (tsParticles) {
-      tsParticles.load({
-        id: "particles-background",
-        options: {
-          fpsLimit: 60,
-          interactivity: {
-            events: {
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-            },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 150,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: "#a0a0a0",
-            },
-            links: {
-              color: "#a0a0a0",
-              distance: 150,
-              enable: true,
-              opacity: 0.4,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: "out",
-              random: false,
-              speed: 2,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 4 },
-            },
-          },
-          detectRetina: true,
-        },
-      });
-    }
 
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(loadingTimer);
     };
   }, []);
+
+  // Effect for interactive gradient background
+  React.useEffect(() => {
+    const handleMouseMove = (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
 
   if (isLoading) {
     return <SplashScreen isFading={isFading} />;

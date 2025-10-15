@@ -47,7 +47,15 @@ const portfolioData = [
   }
 ];
 
-const PortfolioCard = ({ title, description, imageUrl, liveLink, repoLink }) => {
+interface PortfolioCardProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+  liveLink: string;
+  repoLink: string;
+}
+
+const PortfolioCard = ({ title, description, imageUrl, liveLink, repoLink }: PortfolioCardProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleToggle = (e) => {
@@ -80,7 +88,7 @@ export const Portfolio = () => (
     <div className="container">
       <h2 className="section-title">Portofolio Saya</h2>
       <div className="portfolio-grid">
-        {/* FIX: Explicitly pass props to PortfolioCard to avoid potential type inference issues with the spread operator. */}
+        {/* FIX: Refactored to explicitly pass props to PortfolioCard. This resolves the type error by ensuring only valid props are passed to the component. */}
         {portfolioData.map((project) => (
           <PortfolioCard
             key={project.id}
