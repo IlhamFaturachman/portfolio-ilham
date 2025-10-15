@@ -17,8 +17,8 @@ const SplashScreen = ({ isFading }) => (
   </div>
 );
 
-const Header = () => (
-  <header className="app-header">
+const Header = ({ isScrolled }) => (
+  <header className={`app-header ${isScrolled ? 'header-scrolled' : ''}`}>
     <div className="container">
       <nav className="navbar">
         <a href="#hero" className="nav-logo">Ilham Faturachman</a>
@@ -41,6 +41,11 @@ const Footer = () => (
 function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isFading, setIsFading] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [stars, setStars] = React.useState([]);
+  const [mousePosition, setMousePosition] = React.useState({ x: -999, y: -999 });
+  const throttleTimeout = React.useRef(null);
+
 
   React.useEffect(() => {
     // Splash screen timers
@@ -58,18 +63,47 @@ function App() {
     };
   }, []);
 
-  // Effect for interactive gradient background
   React.useEffect(() => {
-    const handleMouseMove = (e) => {
-      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+
+      if (throttleTimeout.current) return;
+
+      throttleTimeout.current = setTimeout(() => {
+        throttleTimeout.current = null;
+      }, 50); // Throttle to prevent too many stars at once
+
+      const newStar = {
+        id: Date.now() + Math.random(),
+        top: event.clientY,
+        left: event.clientX,
+        endX: (Math.random() - 0.5) * 400 + 'px',
+        endY: (Math.random() - 0.5) * 400 + 'px',
+        duration: (Math.random() * 0.8 + 0.5) + 's'
+      };
+
+      setStars(prevStars => [...prevStars, newStar]);
+
+      // Cleanup star after animation
+      setTimeout(() => {
+        setStars(prevStars => prevStars.filter(star => star.id !== newStar.id));
+      }, 1300); // duration + a little buffer
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-
-    // Cleanup function to remove the event listener
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      if(throttleTimeout.current) clearTimeout(throttleTimeout.current);
     };
   }, []);
 
@@ -80,7 +114,27 @@ function App() {
 
   return (
     <div className="app-content">
-      <Header />
+       <div 
+         className="interactive-grid"
+         style={{
+           '--mouse-x': `${mousePosition.x}px`,
+           '--mouse-y': `${mousePosition.y}px`,
+         }}
+       />
+       {stars.map(star => (
+        <div
+          key={star.id}
+          className="star"
+          style={{
+            top: star.top,
+            left: star.left,
+            '--end-x': star.endX,
+            '--end-y': star.endY,
+            '--duration': star.duration
+          }}
+        />
+      ))}
+      <Header isScrolled={isScrolled} />
       <main>
         <Hero />
         <About />

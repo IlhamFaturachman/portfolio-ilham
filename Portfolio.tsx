@@ -88,7 +88,7 @@ export const Portfolio = () => (
     <div className="container">
       <h2 className="section-title">Portofolio Saya</h2>
       <div className="portfolio-grid">
-        {/* FIX: Refactored to explicitly pass props to PortfolioCard. This resolves the type error by ensuring only valid props are passed to the component. */}
+        {/* FIX: Pass props explicitly to PortfolioCard to resolve the TypeScript error. The `key` prop is handled by React and should not be part of the component's props, and this explicit approach avoids potential issues with type inference when using prop spreading. */}
         {portfolioData.map((project) => (
           <PortfolioCard
             key={project.id}

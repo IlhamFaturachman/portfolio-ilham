@@ -23,25 +23,8 @@ body {
   background-color: var(--background-color);
   color: var(--text-primary);
   line-height: 1.6;
-  
-  /* --- Latar Belakang Interaktif Baru --- */
-  background: 
-    radial-gradient(
-      600px circle at var(--mouse-x, 100px) var(--mouse-y, 100px),
-      rgba(3, 218, 198, 0.15),
-      transparent 40%
-    ),
-    linear-gradient(135deg, #100a1c, #121212, #051412);
-  background-size: 200% 200%;
-  animation: gradient-animation 15s ease infinite;
+  overflow-x: hidden; /* Mencegah scroll horizontal dari bintang */
 }
-
-@keyframes gradient-animation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 
 .container {
   max-width: 1100px;
@@ -49,17 +32,78 @@ body {
   padding: 0 2rem;
 }
 
+/* Interactive Grid Background */
+.interactive-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  
+  /* Create the dot pattern */
+  background-image: repeating-radial-gradient(circle at center, rgba(187, 134, 252, 0.15) 0, rgba(187, 134, 252, 0.15) 1px, transparent 1px, transparent 20px);
+  background-size: 20px 20px;
+
+  /* Create the spotlight mask */
+  mask-image: radial-gradient(
+    circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    black 0%,
+    transparent 80%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    black 0%,
+    transparent 80%
+  );
+}
+
+
+/* Interactive Shooting Stars */
+.star {
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1; /* Di atas grid */
+  animation: shootStar var(--duration, 1s) ease-out forwards;
+  box-shadow: 0 0 6px 1px var(--primary-color);
+}
+
+@keyframes shootStar {
+  from {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--end-x), var(--end-y));
+    opacity: 0;
+  }
+}
+
+
 /* Header */
 .app-header {
-  background-color: rgba(30, 30, 30, 0.85);
-  backdrop-filter: blur(10px);
+  background-color: transparent;
   padding: 1rem 0;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.app-header.header-scrolled {
+  background-color: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
   border-bottom: 1px solid var(--border-color);
 }
+
 
 .navbar {
   display: flex;
@@ -103,12 +147,8 @@ body {
   align-items: center;
   text-align: center;
   padding: 0 1rem;
-  background: transparent; /* Pastikan hero transparan untuk menunjukkan latar belakang body */
-}
-
-.hero > * {
   position: relative;
-  z-index: 2;
+  z-index: 2; /* Pastikan konten hero di atas efek latar belakang */
 }
 
 .hero h1 {
@@ -135,10 +175,6 @@ section {
 section .container {
   position: relative;
   z-index: 2;
-}
-
-#portfolio {
-    background-color: transparent; /* Pastikan portofolio transparan */
 }
 
 #about, #contact {
@@ -168,6 +204,8 @@ section .container {
   transition: box-shadow 0.3s ease;
   border: 1px solid var(--border-color);
   cursor: pointer;
+  z-index: 2;
+  position: relative;
 }
 
 .portfolio-card:hover {
@@ -352,5 +390,9 @@ footer {
 
   section {
     padding: 4rem 0;
+  }
+
+  .interactive-grid {
+    display: none; /* Hide grid on smaller screens for performance */
   }
 }
