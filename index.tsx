@@ -24,7 +24,7 @@ const Header = ({ isScrolled }) => (
         <a href="#hero" className="nav-logo">Ilham Faturachman</a>
         <ul className="nav-menu">
           <li className="nav-item"><a href="#about" className="nav-link">Tentang Saya</a></li>
-          <li className="nav-item"><a href="#portfolio" className="nav-link">Portofolio</a></li>
+          <li className="nav-item"><a href="#portfolio" className="nav-link">Proyek</a></li>
           <li className="nav-item"><a href="#contact" className="nav-link">Kontak</a></li>
         </ul>
       </nav>
