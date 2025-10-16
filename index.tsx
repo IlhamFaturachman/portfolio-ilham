@@ -6,6 +6,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Hero } from './Hero.js';
 import { About } from './About.js';
+import { Skills } from './Skills.js';
+import { Experience } from './Experience.js';
 import { Portfolio } from './Portfolio.js';
 import { Contact } from './Contact.js';
 
@@ -24,6 +26,8 @@ const Header = ({ isScrolled }) => (
         <a href="#hero" className="nav-logo">Ilham Faturachman</a>
         <ul className="nav-menu">
           <li className="nav-item"><a href="#about" className="nav-link">Tentang Saya</a></li>
+          <li className="nav-item"><a href="#skills" className="nav-link">Keahlian</a></li>
+          <li className="nav-item"><a href="#experience" className="nav-link">Pengalaman</a></li>
           <li className="nav-item"><a href="#portfolio" className="nav-link">Proyek</a></li>
           <li className="nav-item"><a href="#contact" className="nav-link">Kontak</a></li>
         </ul>
@@ -138,6 +142,8 @@ function App() {
       <main>
         <Hero />
         <About />
+        <Skills />
+        <Experience />
         <Portfolio />
         <Contact />
       </main>
