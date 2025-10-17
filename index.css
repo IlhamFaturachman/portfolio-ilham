@@ -593,60 +593,95 @@ section {
 .proficiency-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border-radius: 4px; }
 .proficiency-level-text { font-size: 0.8rem; text-align: right; color: var(--text-secondary); }
 
-/* Experience Section */
-.timeline {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
+/* --- New Horizontal Scrolling Experience Section --- */
+#experience {
+  height: 300vh; /* Provides the vertical scroll space needed */
+  padding: 0;
+  overflow: visible; /* FIX: Override generic section overflow to allow scrolling */
 }
-.timeline::after {
-  content: '';
-  position: absolute;
-  width: 3px;
-  background-color: var(--border-color);
+
+.experience-sticky-container {
+  position: sticky;
   top: 0;
-  bottom: 0;
-  left: 50%;
-  margin-left: -1.5px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
-.timeline-item {
-  padding: 10px 40px;
-  position: relative;
-  width: 50%;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+
+.experience-sticky-container .section-title {
+  margin-bottom: 1rem;
 }
-.timeline-item.visible {
-  opacity: 1;
-  transform: translateY(0);
+
+.experience-track-wrapper {
+  width: 100%;
 }
-.timeline-item:nth-child(odd) { left: 0; }
-.timeline-item:nth-child(even) { left: 50%; }
-.timeline-item::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: var(--background-color);
-  border: 4px solid var(--primary-color);
-  top: 25px;
-  border-radius: 50%;
-  z-index: 1;
+
+.experience-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  padding: 2rem 5vw; /* Padding on the sides of the track */
 }
-.timeline-item:nth-child(odd)::after { right: -10px; }
-.timeline-item:nth-child(even)::after { left: -10px; }
-.timeline-content {
-  padding: 20px 30px;
+
+.experience-card {
+  width: 70vw; /* Each card takes up 70% of the viewport width */
+  max-width: 800px;
+  flex-shrink: 0;
+  padding: 2.5rem;
   background-color: var(--surface-color);
-  position: relative;
-  border-radius: 6px;
   border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.timeline-date { color: var(--secondary-color); font-size: 0.9rem; margin-bottom: 0.5rem; display: block; }
-.timeline-title { font-size: 1.25rem; font-weight: bold; color: var(--text-primary); margin-bottom: 0.25rem; }
-.timeline-company { font-style: italic; color: var(--text-secondary); margin-bottom: 1rem; }
-.timeline-description { font-size: 0.95rem; color: var(--text-secondary); }
+
+.experience-date { 
+  color: var(--secondary-color); 
+  font-size: 0.9rem; 
+  margin-bottom: 0.5rem; 
+  display: block; 
+}
+
+.experience-title { 
+  font-size: 1.75rem; 
+  font-weight: bold; 
+  color: var(--text-primary); 
+  margin-bottom: 0.5rem; 
+}
+
+.experience-company { 
+  font-style: italic; 
+  font-size: 1.1rem;
+  color: var(--text-secondary); 
+  margin-bottom: 1.5rem; 
+}
+
+.experience-description { 
+  font-size: 1rem; 
+  color: var(--text-secondary); 
+}
+
+.experience-progress-bar-container {
+  width: 50%;
+  max-width: 400px;
+  height: 4px;
+  background-color: var(--border-color);
+  border-radius: 2px;
+  margin-top: 2rem;
+}
+
+.experience-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 2px;
+}
+
 
 /* Portfolio Section */
 .portfolio-grid {
@@ -948,18 +983,23 @@ footer {
   .section-title {
     font-size: 2rem;
   }
-  .timeline::after {
-    left: 20px;
+  #experience {
+    height: 250vh; /* Adjust scroll height for mobile */
   }
-  .timeline-item {
-    width: 100%;
-    padding-left: 60px;
-    padding-right: 15px;
-    left: 0 !important;
+  .experience-card {
+    width: 80vw;
+    padding: 1.5rem;
   }
-  .timeline-item::after {
-    left: 10px;
+  .experience-title {
+    font-size: 1.4rem;
   }
+  .experience-company {
+    font-size: 1rem;
+  }
+  .experience-description {
+    font-size: 0.9rem;
+  }
+
   .skills-container {
     height: 650px; /* Adjust height for detail view */
   }

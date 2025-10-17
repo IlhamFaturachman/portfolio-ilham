@@ -5,62 +5,56 @@
 import React from 'react';
 import { experienceData } from './experience-data.js';
 
-// Fix: Define prop types for the TimelineItem component to resolve type errors.
-type ExperienceItem = (typeof experienceData)[number];
-
-interface TimelineItemProps {
-  item: ExperienceItem;
-  index: number;
-}
-
-const TimelineItem: React.FC<TimelineItemProps> = ({ item, index }) => {
-  const itemRef = React.useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = React.useState(false);
+export const Experience = () => {
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const progressRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.3 }
-    );
-    
-    const currentItemRef = itemRef.current;
-    if (currentItemRef) {
-      observer.observe(currentItemRef);
-    }
+    const handleScroll = () => {
+      const section = sectionRef.current;
+      const track = trackRef.current;
+      const progress = progressRef.current;
+      if (!section || !track || !progress) return;
 
-    return () => {
-      if (currentItemRef) {
-        observer.unobserve(currentItemRef);
+      const { top, height } = section.getBoundingClientRect();
+      const scrollableHeight = height - window.innerHeight;
+
+      // Only calculate when the section is in view
+      if (top <= 0 && top > -scrollableHeight) {
+        const progressPercentage = (-top / scrollableHeight);
+        const maxScrollLeft = track.scrollWidth - track.clientWidth;
+        
+        // Use requestAnimationFrame for smoother animations
+        window.requestAnimationFrame(() => {
+          track.style.transform = `translateX(-${progressPercentage * maxScrollLeft}px)`;
+          progress.style.width = `${progressPercentage * 100}%`;
+        });
       }
     };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div ref={itemRef} className={`timeline-item ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${index * 0.1}s` }}>
-      <div className="timeline-content">
-        <span className="timeline-date">{item.date}</span>
-        <h3 className="timeline-title">{item.title}</h3>
-        <h4 className="timeline-company">{item.company}</h4>
-        <p className="timeline-description">{item.description}</p>
-      </div>
-    </div>
-  );
-};
-
-export const Experience = () => {
-  return (
-    <section id="experience">
-      <div className="container">
-        <h2 className="section-title">Pengalaman Kerja</h2>
-        <div className="timeline">
-          {experienceData.map((item, index) => (
-            <TimelineItem key={item.id} item={item} index={index} />
-          ))}
+    <section id="experience" ref={sectionRef}>
+      <div className="experience-sticky-container">
+        <h2 className="section-title">Perjalanan Karir</h2>
+        <div className="experience-track-wrapper">
+          <div className="experience-track" ref={trackRef}>
+            {experienceData.map((item) => (
+              <div key={item.id} className="experience-card">
+                <span className="experience-date">{item.date}</span>
+                <h3 className="experience-title">{item.title}</h3>
+                <h4 className="experience-company">{item.company}</h4>
+                <p className="experience-description">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="experience-progress-bar-container">
+            <div className="experience-progress-bar" ref={progressRef}></div>
         </div>
       </div>
     </section>
