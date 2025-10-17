@@ -1,3 +1,4 @@
+/* CSS content from the user prompt with the added fix */
 :root {
   --background-color: #121212;
   --surface-color: #1e1e1e;
@@ -286,6 +287,20 @@ section {
   box-shadow: 0 0 8px rgba(0,0,0,0.5);
   z-index: 5;
 }
+
+/* FIX: Add larger, invisible hover area to prevent flickering */
+.skill-star::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background-color: transparent;
+  border-radius: 50%;
+}
+
 
 .skills-container.in-view .skill-star {
   transform: translate(-50%, -50%) scale(1);

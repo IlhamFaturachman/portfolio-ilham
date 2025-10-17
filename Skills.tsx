@@ -118,7 +118,10 @@ export const Skills = () => {
 
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (focusedSkill) return; // Disable parallax when focused
+      // FIX: Disable parallax not only when focused, but also when hovering any star.
+      // This prevents the canvas from moving while the user is trying to interact with a star.
+      if (focusedSkill || hoveredSkill) return;
+
       const canvas = skillsCanvasRef.current;
       if (!canvas) return;
       const { left, top, width, height } = canvas.getBoundingClientRect();
@@ -133,7 +136,7 @@ export const Skills = () => {
     const container = skillsContainerRef.current;
     container?.addEventListener('mousemove', handleMouseMove);
     return () => container?.removeEventListener('mousemove', handleMouseMove);
-  }, [focusedSkill]);
+  }, [focusedSkill, hoveredSkill]); // FIX: Add hoveredSkill to dependency array
   
   const canvasTransformStyle = focusedSkill
   ? { transform: `scale(1.5) translate(${50 - focusedSkill.x}%, ${50 - focusedSkill.y}%)` }
