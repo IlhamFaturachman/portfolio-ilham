@@ -95,33 +95,68 @@ body {
   }
 }
 
-
-/* Header */
-.app-header {
-  background-color: transparent;
-  padding: 1rem 0;
+/* Dot Navigator */
+.dot-nav {
   position: fixed;
-  width: 100%;
-  top: 0;
+  top: 50%;
+  left: 2rem;
+  transform: translateY(-50%);
   z-index: 1000;
-  border-bottom: 1px solid transparent;
-  transition: background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
 }
 
-.app-header.header-scrolled {
-  background-color: rgba(30, 30, 30, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
-  border-bottom: 1px solid var(--border-color);
-}
-
-
-.navbar {
+.dot-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
+.dot-nav li a {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-color: transparent;
+  border: 2px solid var(--text-secondary);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dot-nav li.active a,
+.dot-nav li a:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: scale(1.3);
+}
+
+.dot-tooltip {
+  position: absolute;
+  left: 180%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dot-nav li a:hover .dot-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(10px);
+}
+
+
+/* Shared Logo Style (used in Splash Screen) */
 .nav-logo {
   font-size: 1.5rem;
   font-weight: bold;
@@ -129,25 +164,6 @@ body {
   text-decoration: none;
 }
 
-.nav-menu {
-  list-style: none;
-  display: flex;
-}
-
-.nav-item {
-  margin-left: 2rem;
-}
-
-.nav-link {
-  color: var(--text-primary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: var(--primary-color);
-}
 
 /* --- New Interactive Hero & About Section --- */
 #hero-about {
@@ -1002,8 +1018,11 @@ footer {
 }
 
 @media (max-width: 768px) {
-  .nav-menu {
-    display: none; /* Simplest solution for now, could be replaced with a hamburger menu */
+  .dot-nav {
+    left: 1rem;
+  }
+  .dot-tooltip {
+    display: none; /* Tooltips are not ideal on touch devices */
   }
   .hero-face h1 {
     font-size: 2.5rem;

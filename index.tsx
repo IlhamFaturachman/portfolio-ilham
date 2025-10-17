@@ -9,6 +9,7 @@ import { Skills } from './Skills.js';
 import { Experience } from './Experience.js';
 import { Portfolio } from './Portfolio.js';
 import { Contact } from './Contact.js';
+import { DotNavigator } from './DotNavigator.js';
 
 const SplashScreen = ({ isFading }) => (
   <div className={`splash-screen ${isFading ? 'fade-out' : ''}`}>
@@ -16,22 +17,6 @@ const SplashScreen = ({ isFading }) => (
       <h1 className="nav-logo">Ilham Faturachman</h1>
     </div>
   </div>
-);
-
-const Header = ({ isScrolled }) => (
-  <header className={`app-header ${isScrolled ? 'header-scrolled' : ''}`}>
-    <div className="container">
-      <nav className="navbar">
-        <a href="#hero-about" className="nav-logo">Ilham Faturachman</a>
-        <ul className="nav-menu">
-          <li className="nav-item"><a href="#skills" className="nav-link">Keahlian</a></li>
-          <li className="nav-item"><a href="#experience" className="nav-link">Pengalaman</a></li>
-          <li className="nav-item"><a href="#portfolio" className="nav-link">Proyek</a></li>
-          <li className="nav-item"><a href="#contact" className="nav-link">Kontak</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
 );
 
 const Footer = () => (
@@ -43,7 +28,6 @@ const Footer = () => (
 function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isFading, setIsFading] = React.useState(false);
-  const [isScrolled, setIsScrolled] = React.useState(false);
   const [stars, setStars] = React.useState([]);
   const [mousePosition, setMousePosition] = React.useState({ x: -999, y: -999 });
   const throttleTimeout = React.useRef(null);
@@ -62,16 +46,6 @@ function App() {
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(loadingTimer);
-    };
-  }, []);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -136,7 +110,7 @@ function App() {
           }}
         />
       ))}
-      <Header isScrolled={isScrolled} />
+      <DotNavigator />
       <main>
         <HeroAbout />
         <Skills />
