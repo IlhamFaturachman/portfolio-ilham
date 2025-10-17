@@ -9,16 +9,17 @@ import { Project } from './portfolio-data.js';
 interface PortfolioCardProps {
   project: Project;
   onCardClick: () => void;
+  isFilteredOut: boolean;
 }
 
-export const PortfolioCard: React.FC<PortfolioCardProps> = ({ project, onCardClick }) => {
+export const PortfolioCard: React.FC<PortfolioCardProps> = ({ project, onCardClick, isFilteredOut }) => {
   return (
     <div 
-      className="portfolio-card"
+      className={`portfolio-card ${isFilteredOut ? 'filtered-out' : ''}`}
       onClick={onCardClick}
       aria-label={`Lihat detail untuk ${project.title}`}
-      tabIndex={0}
-      onKeyPress={(e) => e.key === 'Enter' && onCardClick()}
+      tabIndex={isFilteredOut ? -1 : 0}
+      onKeyPress={(e) => !isFilteredOut && e.key === 'Enter' && onCardClick()}
     >
       <div 
         className="card-image" 
@@ -26,7 +27,11 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({ project, onCardCli
       ></div>
       <div className="card-overlay">
         <h3 className="card-title">{project.title}</h3>
-        <p>Lihat Detail &rarr;</p>
+        <div className="card-tech-tags">
+          {project.technologies.slice(0, 3).map(tech => (
+            <span key={tech} className="card-tech-tag">{tech}</span>
+          ))}
+        </div>
       </div>
     </div>
   );

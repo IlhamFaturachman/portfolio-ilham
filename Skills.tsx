@@ -5,6 +5,50 @@
 import React from 'react';
 import { skillsData, Skill } from './skills-data.js';
 
+const useDecodeEffect = (originalText, scrambleChars) => {
+  const [text, setText] = React.useState(originalText);
+  const intervalRef = React.useRef<number | null>(null);
+
+  const trigger = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    let iteration = 0;
+    intervalRef.current = window.setInterval(() => {
+      setText(
+        originalText
+          .split("")
+          .map((letter, index) => {
+            if (index < iteration) {
+              return originalText[index];
+            }
+            if (letter === ' ') return ' ';
+            return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          })
+          .join("")
+      );
+
+      if (iteration >= originalText.length) {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+      }
+      iteration += 1 / 4; 
+    }, 40);
+  };
+  
+  const reset = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setText(originalText);
+  }
+
+  React.useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    }
+  }, []);
+
+  return { text, trigger, reset };
+}
+
+
 const SkillDetailDisplay = ({ skill, onClose }: { skill: Skill, onClose: () => void }) => (
   <div className="skill-detail-wrapper">
     <div className="info-content-wrapper">
@@ -71,6 +115,10 @@ export const Skills = () => {
   const [wavePosition, setWavePosition] = React.useState<{x: string, y: string} | null>(null);
   const skillsCanvasRef = React.useRef<HTMLDivElement>(null);
   const skillsContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const originalTitle = "Konstelasi Keahlian";
+  const scrambleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?@#$*";
+  const { text: decodedTitle, trigger: triggerDecode, reset: resetDecode } = useDecodeEffect(originalTitle, scrambleChars);
 
   const categories = ['All', ...Array.from(new Set(skillsData.map(s => s.category)))];
 
@@ -146,7 +194,13 @@ export const Skills = () => {
     <section id="skills">
       <div className="container">
         <div className="section-title-wrapper skills-title">
-          <h2 className="section-main-title">Konstelasi Keahlian</h2>
+          <h2 
+            className="section-main-title decode-title"
+            onMouseEnter={triggerDecode}
+            onMouseLeave={resetDecode}
+          >
+            {decodedTitle}
+          </h2>
           <p className="section-subtitle">Jelajahi peta bintang dari kemampuan teknis saya yang saling terhubung.</p>
         </div>
           <div className="skill-filters" role="tablist" aria-label="Filter Keahlian">

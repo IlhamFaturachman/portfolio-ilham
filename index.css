@@ -335,7 +335,7 @@ section {
 .section-subtitle {
   font-size: 1rem;
   color: var(--text-secondary);
-  max-width: 400px;
+  max-width: 450px; /* Increased width */
   margin-top: 0.5rem;
 }
 
@@ -346,7 +346,7 @@ section {
 }
 
 .skills-title::before {
-  content: '01';
+  content: '02'; /* Corrected number */
   position: absolute;
   left: -2rem;
   top: 50%;
@@ -760,10 +760,68 @@ section {
 }
 
 
-/* Portfolio Section */
+/* --- Portfolio Section Enhancements --- */
+.portfolio-title::before {
+  content: '03';
+  position: absolute;
+  left: -2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  font-weight: 700;
+  color: rgba(224, 224, 224, 0.05);
+  z-index: -1;
+  line-height: 1;
+}
+
+.decode-title {
+  cursor: pointer;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+.portfolio-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.portfolio-filter-btn {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.portfolio-filter-btn:hover, .portfolio-filter-btn:focus {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.portfolio-filter-btn.active {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  color: var(--background-color);
+  border-color: transparent;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(187, 134, 252, 0.4);
+}
+
 .portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex; /* FIX: Change from grid to flex */
+  flex-wrap: wrap; /* FIX: Allow items to wrap to the next line */
   gap: 2rem;
   opacity: 0;
   transform: translateY(50px);
@@ -773,18 +831,38 @@ section {
   opacity: 1;
   transform: translateY(0);
 }
+
 .portfolio-card {
+  flex: 1 1 300px; /* FIX: Replicate responsive grid-like behavior with flexbox */
   position: relative;
   height: 250px;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.3s ease;
   border: 1px solid var(--border-color);
+  /* FIX: Added flex-basis to transition for smooth animation */
+  transition: transform 0.4s ease, opacity 0.4s ease, width 0.4s ease, padding 0.4s ease, margin 0.4s ease, height 0.4s ease, flex-basis 0.4s ease;
+  transform-origin: center;
 }
 .portfolio-card:hover {
   transform: scale(1.05);
+  z-index: 10;
 }
+
+.portfolio-card.filtered-out {
+  flex-grow: 0;   /* FIX: Prevent from growing */
+  flex-basis: 0;  /* FIX: Collapse basis to 0 */
+  transform: scale(0.8);
+  opacity: 0;
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  pointer-events: none;
+  border: none;
+  min-width: 0;
+}
+
 .card-image {
   width: 100%;
   height: 100%;
@@ -800,19 +878,47 @@ section {
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-  padding: 2rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 20%, transparent);
+  padding: 1.5rem;
   color: white;
   transform: translateY(100%);
   transition: transform 0.4s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  height: 100%;
 }
 .portfolio-card:hover .card-overlay {
   transform: translateY(0);
 }
 .card-title {
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   font-size: 1.4rem;
 }
+
+.card-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease 0.2s, transform 0.3s ease 0.2s;
+}
+.portfolio-card:hover .card-tech-tags {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-tech-tag {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(2px);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 
 /* Project Modal */
 .modal-overlay {
@@ -891,14 +997,29 @@ section {
 .modal-link.secondary { background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); }
 .modal-link.secondary:hover { background-color: rgba(187, 134, 252, 0.1); }
 
-/* Contact Section */
-.contact-content { text-align: center; }
-.contact-content p { max-width: 600px; margin: 0 auto 2rem; color: var(--text-secondary); }
-.contact-form {
-  max-width: 600px;
-  margin: 0 auto 3rem;
-  text-align: left;
+/* --- New Contact Section --- */
+.contact-title .section-main-title,
+.contact-title .section-subtitle {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+.contact-grid-container {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 4rem;
+  align-items: stretch; /* Ubah dari center agar kolom memiliki tinggi yang sama */
+}
+
+.contact-form-wrapper {
+  max-width: 600px;
+}
+
+.contact-form {
+  width: 100%;
+}
+
 .form-group { position: relative; margin-bottom: 2rem; }
 .form-input {
   width: 100%;
@@ -934,7 +1055,10 @@ section {
 }
 textarea.form-input { resize: vertical; min-height: 120px; }
 .submit-btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
   width: 100%;
   padding: 1rem;
   background-color: var(--primary-color);
@@ -944,28 +1068,81 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+.submit-btn i {
+  transition: transform 0.3s ease;
 }
 .submit-btn:hover:not(:disabled) {
   background-color: #a764fa;
+  box-shadow: 0 0 15px rgba(187, 134, 252, 0.5);
+}
+.submit-btn:hover:not(:disabled) i {
+  transform: translateX(5px);
 }
 .submit-btn:disabled {
   background-color: #555;
   cursor: not-allowed;
 }
-.form-status { margin-top: 1rem; }
+.form-status { margin-top: 1rem; text-align: center; }
 .form-status.success { color: var(--success-color); }
 .form-status.error { color: var(--error-color); }
 
-.social-links { display: flex; justify-content: center; gap: 2rem; }
+.contact-info-wrapper {
+  text-align: center;
+  /* Jadikan flex container untuk mengatur tata letak anak secara vertikal */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.contact-info-wrapper h3 {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.interactive-visual-container {
+  width: 100%;
+  max-width: 400px;
+  flex-grow: 1; /* Biarkan container ini mengisi ruang vertikal yang tersedia */
+  margin: 0 auto 2rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.02), transparent 70%);
+  cursor: crosshair;
+}
+
+.interactive-visual-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.social-links { 
+  display: flex; 
+  justify-content: center; 
+  gap: 1.5rem; 
+}
 .social-links a {
   color: var(--text-secondary);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   transition: color 0.3s, transform 0.3s;
+  background-color: var(--surface-color);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--border-color);
 }
 .social-links a:hover {
   color: var(--primary-color);
-  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(187, 134, 252, 0.2);
 }
 
 /* Footer */
@@ -1014,6 +1191,18 @@ footer {
 @media (max-width: 992px) {
   .skills-container {
     height: 600px;
+  }
+  .contact-grid-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .contact-info-wrapper {
+    margin-top: 2rem;
+  }
+  .interactive-visual-container {
+    max-width: 350px;
+    height: 350px;
+    flex-grow: 0; /* Override flex-grow on smaller screens if needed */
   }
 }
 
