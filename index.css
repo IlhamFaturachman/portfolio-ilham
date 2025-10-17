@@ -1,15 +1,42 @@
-/* CSS content from the user prompt with the added fix */
+/* CSS content with new Cyber Teal & Amber color palette and light/dark mode */
 :root {
-  --background-color: #121212;
-  --surface-color: #1e1e1e;
-  --primary-color: #bb86fc;
-  --secondary-color: #03dac6;
-  --text-primary: #e0e0e0;
-  --text-secondary: #a0a0a0;
-  --border-color: #2c2c2c;
-  --success-color: #4CAF50;
-  --error-color: #F44336;
+  /* Cyber Teal & Amber - Dark Mode */
+  --background-color: #0A0F14;
+  --surface-color: #161D27;
+  --primary-color: #00F5C4;
+  --primary-color-hover: #00e0b4;
+  --secondary-color: #FFB800;
+  --text-primary: #E1E8F0;
+  --text-secondary: #94A3B8;
+  --border-color: #2c3e50;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --disabled-color: #495057;
+
+  /* RGB versions for rgba() */
+  --primary-color-rgb: 0, 245, 196;
+  --secondary-color-rgb: 255, 184, 0;
 }
+
+body.light-mode {
+  /* Cyber Teal & Amber - Light Mode */
+  --background-color: #F8F9FA;
+  --surface-color: #FFFFFF;
+  --primary-color: #00A896;
+  --primary-color-hover: #008a79;
+  --secondary-color: #FFB800;
+  --text-primary: #161D27;
+  --text-secondary: #64748B;
+  --border-color: #dee2e6;
+  --success-color: #198754;
+  --error-color: #dc3545;
+  --disabled-color: #6c757d;
+
+  /* RGB versions for rgba() */
+  --primary-color-rgb: 0, 168, 150;
+  --secondary-color-rgb: 255, 184, 0;
+}
+
 
 * {
   margin: 0;
@@ -23,17 +50,17 @@ html {
 
 body {
   font-family: 'Poppins', sans-serif;
-  /* background-color dipindahkan ke .app-content */
   color: var(--text-primary);
   line-height: 1.6;
-  overflow-x: hidden; /* Mencegah scroll horizontal dari bintang, dipindahkan ke sini */
+  overflow-x: hidden; 
+  background-color: var(--background-color); /* Set background on body for consistency */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app-content {
   background-color: var(--background-color);
-  position: relative; /* Diperlukan agar z-index anak berfungsi dengan benar */
-  /* overflow-x: hidden; DIHAPUS DARI SINI */
-  z-index: 1; /* Membuat stacking context */
+  position: relative; 
+  z-index: 1; 
 }
 
 .container {
@@ -41,6 +68,32 @@ body {
   margin: 0 auto;
   padding: 0 2rem;
 }
+
+/* Theme Switcher */
+.theme-switcher {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: var(--surface-color);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+.theme-switcher:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: scale(1.1) rotate(15deg);
+}
+
 
 /* Interactive Grid Background */
 .interactive-grid {
@@ -54,7 +107,7 @@ body {
   
   /* Create the dot pattern */
   background-image: 
-    radial-gradient(circle at center, rgba(187, 134, 252, 0.25) 1px, transparent 1px);
+    radial-gradient(circle at center, rgba(var(--primary-color-rgb), 0.25) 1px, transparent 1px);
   background-size: 30px 30px;
 
   /* Create the spotlight mask */
@@ -79,7 +132,7 @@ body {
   background-color: var(--primary-color);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 0; /* Di atas grid tapi di bawah konten */
+  z-index: 0; 
   animation: shootStar var(--duration, 1s) ease-out forwards;
   box-shadow: 0 0 6px 1px var(--primary-color);
 }
@@ -208,13 +261,19 @@ body {
   text-align: center;
   
   padding: 2.5rem;
-  background-color: rgba(30, 30, 30, 0.7);
+  background-color: rgba(var(--surface-color-rgb, 22, 29, 39), 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
+
+body.light-mode .hero-face {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
 
 .hero-face-front {
   flex-direction: column;
@@ -250,8 +309,9 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid var(--primary-color);
-  box-shadow: 0 0 20px rgba(187, 134, 252, 0.4);
+  box-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.4);
   flex-shrink: 0;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .about-content {
@@ -341,7 +401,6 @@ section {
 
 /* --- New Constellation Skills Section --- */
 #skills {
-  /* background-color: var(--background-color); */ /* Dihapus agar transparan */
   min-height: 90vh;
 }
 
@@ -353,9 +412,13 @@ section {
   transform: translateY(-50%);
   font-size: 8rem;
   font-weight: 700;
-  color: rgba(224, 224, 224, 0.05);
+  color: rgba(var(--text-primary-rgb, 225, 232, 240), 0.05);
   z-index: -1;
   line-height: 1;
+  transition: color 0.3s ease;
+}
+body.light-mode .skills-title::before {
+  color: rgba(var(--text-primary-rgb, 22, 29, 39), 0.05);
 }
 
 
@@ -393,22 +456,27 @@ section {
   color: var(--background-color);
   border-color: transparent;
   font-weight: bold;
-  box-shadow: 0 0 10px rgba(187, 134, 252, 0.4);
+  box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.4);
 }
 
 /* Skills Container & Canvas */
 .skills-container {
   position: relative;
   width: 100%;
-  max-width: 1100px; /* Diperlebar dari 900px */
+  max-width: 1100px;
   margin: 0 auto;
   height: 700px;
   perspective: 1000px;
-  overflow: hidden; /* Clip the transformed canvas */
+  overflow: hidden; 
   border-radius: 12px;
-  background: radial-gradient(ellipse at center, rgba(30, 30, 30, 1) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(var(--surface-color-rgb, 22, 29, 39), 1) 0%, transparent 70%);
   border: 1px solid var(--border-color);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
+body.light-mode .skills-container {
+   background: radial-gradient(ellipse at center, rgba(255, 255, 255, 1) 0%, transparent 70%);
+}
+
 
 .skills-canvas {
   position: absolute;
@@ -418,7 +486,6 @@ section {
   left: 0;
   transform-style: preserve-3d;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Parallax effect via JS */
   transform: rotateY(calc(var(--mouse-x-stars, 0) * 5deg)) rotateX(calc(var(--mouse-y-stars, 0) * -5deg));
 }
 
@@ -435,13 +502,12 @@ section {
   cursor: pointer;
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s, box-shadow 0.3s;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s, box-shadow 0.3s, background-color 0.3s ease, border-color 0.3s ease;
   border: 2px solid var(--border-color);
   box-shadow: 0 0 8px rgba(0,0,0,0.5);
   z-index: 5;
 }
 
-/* FIX: Add larger, invisible hover area to prevent flickering */
 .skill-star::after {
   content: '';
   position: absolute;
@@ -469,7 +535,7 @@ section {
   box-shadow: 0 0 10px 2px var(--primary-color);
   opacity: 0;
   animation: pulse 2.5s infinite ease-in-out;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, box-shadow 0.3s ease;
 }
 
 .skill-star:hover::before, .skill-star.selected::before {
@@ -509,12 +575,12 @@ section {
   z-index: 1;
 }
 .constellation-line {
-  stroke: rgba(187, 134, 252, 0.15);
+  stroke: rgba(var(--primary-color-rgb), 0.15);
   stroke-width: 1;
   transition: stroke 0.4s ease, opacity 0.5s ease;
 }
 .constellation-line.line-hovered {
-  stroke: rgba(3, 218, 198, 0.5);
+  stroke: rgba(var(--secondary-color-rgb), 0.5);
 }
 
 /* Energy Wave on Click */
@@ -532,12 +598,12 @@ section {
 
 @keyframes energy-wave-anim {
   0% {
-    box-shadow: 0 0 10px 5px rgba(3, 218, 198, 0.8), inset 0 0 5px 2px rgba(3, 218, 198, 0.8);
+    box-shadow: 0 0 10px 5px rgba(var(--secondary-color-rgb), 0.8), inset 0 0 5px 2px rgba(var(--secondary-color-rgb), 0.8);
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
   100% {
-    box-shadow: 0 0 50px 30px rgba(3, 218, 198, 0), inset 0 0 20px 10px rgba(3, 218, 198, 0);
+    box-shadow: 0 0 50px 30px rgba(var(--secondary-color-rgb), 0), inset 0 0 20px 10px rgba(var(--secondary-color-rgb), 0);
     transform: translate(-50%, -50%) scale(2);
     opacity: 0;
   }
@@ -555,7 +621,7 @@ section {
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, background-color 0.3s ease;
     pointer-events: none;
     transform: translateY(5px);
     z-index: 20;
@@ -578,7 +644,7 @@ section {
   width: 90%;
   max-width: 450px;
   padding: 2rem;
-  background-color: rgba(30, 30, 30, 0.9);
+  background-color: rgba(var(--surface-color-rgb, 22, 29, 39), 0.9);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
@@ -586,8 +652,12 @@ section {
   z-index: 50;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s, background-color 0.3s ease, border-color 0.3s ease;
 }
+body.light-mode .skill-detail-wrapper {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
 
 .skills-container.focus-active .skill-detail-wrapper {
   opacity: 1;
@@ -646,9 +716,9 @@ section {
 
 /* --- New Horizontal Scrolling Experience Section --- */
 #experience {
-  height: 300vh; /* Provides the vertical scroll space needed */
+  height: 300vh; 
   padding: 0;
-  overflow: visible; /* FIX: Override generic section overflow to allow scrolling */
+  overflow: visible;
 }
 
 .experience-sticky-container {
@@ -677,9 +747,14 @@ section {
   position: absolute;
   font-size: clamp(4rem, 10vw, 8rem);
   font-weight: 700;
-  color: rgba(224, 224, 224, 0.1);
+  color: rgba(var(--text-primary-rgb, 225, 232, 240), 0.1);
   line-height: 1;
   margin: 0;
+  transition: color 0.3s ease;
+}
+body.light-mode .experience-title-top,
+body.light-mode .experience-title-bottom {
+  color: rgba(var(--text-primary-rgb, 22, 29, 39), 0.1);
 }
 
 .experience-title-top {
@@ -700,11 +775,11 @@ section {
   display: flex;
   gap: 2rem;
   width: max-content;
-  padding: 2rem 5vw; /* Padding on the sides of the track */
+  padding: 2rem 5vw;
 }
 
 .experience-card {
-  width: 70vw; /* Each card takes up 70% of the viewport width */
+  width: 70vw; 
   max-width: 800px;
   flex-shrink: 0;
   padding: 2.5rem;
@@ -715,6 +790,7 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .experience-date { 
@@ -750,6 +826,7 @@ section {
   background-color: var(--border-color);
   border-radius: 2px;
   margin-top: 2rem;
+  transition: background-color 0.3s ease;
 }
 
 .experience-progress-bar {
@@ -769,19 +846,24 @@ section {
   transform: translateY(-50%);
   font-size: 8rem;
   font-weight: 700;
-  color: rgba(224, 224, 224, 0.05);
+  color: rgba(var(--text-primary-rgb, 225, 232, 240), 0.05);
   z-index: -1;
   line-height: 1;
+  transition: color 0.3s ease;
 }
+body.light-mode .portfolio-title::before {
+  color: rgba(var(--text-primary-rgb, 22, 29, 39), 0.05);
+}
+
 
 .decode-title {
   cursor: pointer;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 
@@ -816,12 +898,12 @@ section {
   color: var(--background-color);
   border-color: transparent;
   font-weight: bold;
-  box-shadow: 0 0 10px rgba(187, 134, 252, 0.4);
+  box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.4);
 }
 
 .portfolio-grid {
-  display: flex; /* FIX: Change from grid to flex */
-  flex-wrap: wrap; /* FIX: Allow items to wrap to the next line */
+  display: flex; 
+  flex-wrap: wrap; 
   gap: 2rem;
   opacity: 0;
   transform: translateY(50px);
@@ -833,15 +915,14 @@ section {
 }
 
 .portfolio-card {
-  flex: 1 1 300px; /* FIX: Replicate responsive grid-like behavior with flexbox */
+  flex: 1 1 300px; 
   position: relative;
   height: 250px;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   border: 1px solid var(--border-color);
-  /* FIX: Added flex-basis to transition for smooth animation */
-  transition: transform 0.4s ease, opacity 0.4s ease, width 0.4s ease, padding 0.4s ease, margin 0.4s ease, height 0.4s ease, flex-basis 0.4s ease;
+  transition: transform 0.4s ease, opacity 0.4s ease, width 0.4s ease, padding 0.4s ease, margin 0.4s ease, height 0.4s ease, flex-basis 0.4s ease, border-color 0.3s ease;
   transform-origin: center;
 }
 .portfolio-card:hover {
@@ -850,8 +931,8 @@ section {
 }
 
 .portfolio-card.filtered-out {
-  flex-grow: 0;   /* FIX: Prevent from growing */
-  flex-basis: 0;  /* FIX: Collapse basis to 0 */
+  flex-grow: 0;
+  flex-basis: 0;
   transform: scale(0.8);
   opacity: 0;
   width: 0;
@@ -951,7 +1032,7 @@ section {
   overflow-y: auto;
   position: relative;
   transform: scale(0.9);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 .modal-overlay.open .modal-content {
   transform: scale(1);
@@ -990,12 +1071,12 @@ section {
   padding: 0.75rem 1.5rem;
   text-decoration: none;
   border-radius: 4px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 .modal-link.primary { background-color: var(--primary-color); color: var(--background-color); font-weight: bold; }
-.modal-link.primary:hover { background-color: #a764fa; }
+.modal-link.primary:hover { background-color: var(--primary-color-hover); }
 .modal-link.secondary { background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); }
-.modal-link.secondary:hover { background-color: rgba(187, 134, 252, 0.1); }
+.modal-link.secondary:hover { background-color: rgba(var(--primary-color-rgb), 0.1); }
 
 /* --- New Contact Section --- */
 .contact-title .section-main-title,
@@ -1009,7 +1090,7 @@ section {
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 4rem;
-  align-items: stretch; /* Ubah dari center agar kolom memiliki tinggi yang sama */
+  align-items: stretch;
 }
 
 .contact-form-wrapper {
@@ -1030,7 +1111,7 @@ section {
   color: var(--text-primary);
   font-size: 1rem;
   font-family: inherit;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, color 0.3s;
 }
 .form-input:focus {
   outline: none;
@@ -1068,20 +1149,20 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
 }
 .submit-btn i {
   transition: transform 0.3s ease;
 }
 .submit-btn:hover:not(:disabled) {
-  background-color: #a764fa;
-  box-shadow: 0 0 15px rgba(187, 134, 252, 0.5);
+  background-color: var(--primary-color-hover);
+  box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.5);
 }
 .submit-btn:hover:not(:disabled) i {
   transform: translateX(5px);
 }
 .submit-btn:disabled {
-  background-color: #555;
+  background-color: var(--disabled-color);
   cursor: not-allowed;
 }
 .form-status { margin-top: 1rem; text-align: center; }
@@ -1090,7 +1171,6 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 
 .contact-info-wrapper {
   text-align: center;
-  /* Jadikan flex container untuk mengatur tata letak anak secara vertikal */
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -1105,14 +1185,19 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 .interactive-visual-container {
   width: 100%;
   max-width: 400px;
-  flex-grow: 1; /* Biarkan container ini mengisi ruang vertikal yang tersedia */
+  flex-grow: 1;
   margin: 0 auto 2rem;
   padding: 1rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.02), transparent 70%);
+  background: radial-gradient(circle at center, rgba(var(--text-primary-rgb, 225, 232, 240), 0.02), transparent 70%);
   cursor: crosshair;
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
+body.light-mode .interactive-visual-container {
+   background: radial-gradient(circle at center, rgba(var(--text-primary-rgb, 22, 29, 39), 0.02), transparent 70%);
+}
+
 
 .interactive-visual-canvas {
   display: block;
@@ -1128,7 +1213,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 .social-links a {
   color: var(--text-secondary);
   font-size: 1.5rem;
-  transition: color 0.3s, transform 0.3s;
+  transition: color 0.3s, transform 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
   background-color: var(--surface-color);
   width: 50px;
   height: 50px;
@@ -1142,7 +1227,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   color: var(--primary-color);
   border-color: var(--primary-color);
   transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 5px 15px rgba(187, 134, 252, 0.2);
+  box-shadow: 0 5px 15px rgba(var(--primary-color-rgb), 0.2);
 }
 
 /* Footer */
@@ -1153,6 +1238,7 @@ footer {
   border-top: 1px solid var(--border-color);
   position: relative;
   z-index: 2;
+  transition: border-color 0.3s ease;
 }
 
 /* Splash Screen */
@@ -1168,7 +1254,7 @@ footer {
   justify-content: center;
   align-items: center;
   opacity: 1;
-  transition: opacity 0.5s ease-out;
+  transition: opacity 0.5s ease-out, background-color 0.3s ease;
 }
 .splash-screen.fade-out {
   opacity: 0;
@@ -1202,16 +1288,20 @@ footer {
   .interactive-visual-container {
     max-width: 350px;
     height: 350px;
-    flex-grow: 0; /* Override flex-grow on smaller screens if needed */
+    flex-grow: 0;
   }
 }
 
 @media (max-width: 768px) {
+  .theme-switcher {
+    top: 1rem;
+    right: 1rem;
+  }
   .dot-nav {
     left: 1rem;
   }
   .dot-tooltip {
-    display: none; /* Tooltips are not ideal on touch devices */
+    display: none;
   }
   .hero-face h1 {
     font-size: 2.5rem;
@@ -1220,7 +1310,7 @@ footer {
     font-size: 1rem;
   }
   #hero-about {
-    perspective: none; /* Disable 3D on smaller screens for simplicity */
+    perspective: none;
   }
   .hero-flipper-container {
     height: auto;
@@ -1253,7 +1343,7 @@ footer {
     font-size: 2rem;
   }
   #experience {
-    height: 250vh; /* Adjust scroll height for mobile */
+    height: 250vh;
   }
   .experience-card {
     width: 80vw;
@@ -1270,7 +1360,7 @@ footer {
   }
 
   .skills-container {
-    height: 650px; /* Adjust height for detail view */
+    height: 650px;
   }
   .skill-detail-wrapper {
     padding: 1.5rem;

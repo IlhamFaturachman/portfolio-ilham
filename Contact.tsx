@@ -32,12 +32,10 @@ const ReactiveParticleFormation = () => {
     };
 
     const initialize = () => {
-      // Atur ukuran kanvas agar sesuai dengan container-nya
       const rect = container.getBoundingClientRect();
       canvas.width = rect.width;
       canvas.height = rect.height;
 
-      // Reset dan inisialisasi ulang partikel
       particles = [];
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         particles.push({
@@ -51,25 +49,26 @@ const ReactiveParticleFormation = () => {
     };
 
     const animate = () => {
-      // Jangan menggambar jika belum diinisialisasi
       if (particles.length === 0 || canvas.width === 0 || canvas.height === 0) {
         animationFrameId = requestAnimationFrame(animate);
         return;
       };
+      
+      // Baca warna dari variabel CSS pada setiap frame agar tetap sinkron dengan tema
+      const styles = getComputedStyle(container);
+      const primaryColor = styles.getPropertyValue('--primary-color').trim();
+      const secondaryColorRgb = styles.getPropertyValue('--secondary-color-rgb').trim();
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Perbarui dan gambar partikel
       particles.forEach(p => {
-        // Gerakan ambien
         p.x += p.vx;
         p.y += p.vy;
 
-        // Tumbukan dengan dinding
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-        // Efek tolak dari mouse
         if (mouse.x !== null && mouse.y !== null) {
           const dx = p.x - mouse.x;
           const dy = p.y - mouse.y;
@@ -84,10 +83,9 @@ const ReactiveParticleFormation = () => {
           }
         }
         
-        // Gambar partikel
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(187, 134, 252, 0.8)'; // --primary-color
+        ctx.fillStyle = primaryColor;
         ctx.fill();
       });
 
@@ -105,7 +103,7 @@ const ReactiveParticleFormation = () => {
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(3, 218, 198, ${opacity * 0.5})`; // --secondary-color dengan opasitas
+            ctx.strokeStyle = `rgba(${secondaryColorRgb}, ${opacity * 0.5})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -115,10 +113,9 @@ const ReactiveParticleFormation = () => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    initialize(); // Panggil inisialisasi saat pertama kali
-    animate(); // Mulai loop animasi
+    initialize();
+    animate();
 
-    // Event listeners
     const handleMouseMove = (e: MouseEvent) => {
         const rect = canvas.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
@@ -133,13 +130,11 @@ const ReactiveParticleFormation = () => {
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseleave', handleMouseLeave);
     
-    // Amati perubahan ukuran container dan inisialisasi ulang jika berubah
     const resizeObserver = new ResizeObserver(() => {
       initialize();
     });
     resizeObserver.observe(container);
 
-    // Bersihkan
     return () => {
       cancelAnimationFrame(animationFrameId);
       container.removeEventListener('mousemove', handleMouseMove);

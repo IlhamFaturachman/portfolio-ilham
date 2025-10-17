@@ -10,6 +10,7 @@ import { Experience } from './Experience.js';
 import { Portfolio } from './Portfolio.js';
 import { Contact } from './Contact.js';
 import { DotNavigator } from './DotNavigator.js';
+import { ThemeSwitcher } from './ThemeSwitcher.js';
 
 const SplashScreen = ({ isFading }) => (
   <div className={`splash-screen ${isFading ? 'fade-out' : ''}`}>
@@ -110,6 +111,7 @@ function App() {
           }}
         />
       ))}
+      <ThemeSwitcher />
       <DotNavigator />
       <main>
         <HeroAbout />
