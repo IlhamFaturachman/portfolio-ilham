@@ -26,13 +26,13 @@ body {
   /* background-color dipindahkan ke .app-content */
   color: var(--text-primary);
   line-height: 1.6;
-  /* overflow-x dipindahkan ke .app-content */
+  overflow-x: hidden; /* Mencegah scroll horizontal dari bintang, dipindahkan ke sini */
 }
 
 .app-content {
   background-color: var(--background-color);
   position: relative; /* Diperlukan agar z-index anak berfungsi dengan benar */
-  overflow-x: hidden; /* Mencegah scroll horizontal dari bintang */
+  /* overflow-x: hidden; DIHAPUS DARI SINI */
   z-index: 1; /* Membuat stacking context */
 }
 
@@ -302,11 +302,46 @@ section {
   font-weight: 600;
 }
 
-/* New Constellation Skills Section */
+/* --- New Title Styles --- */
+.section-title-wrapper {
+  position: relative;
+  margin-bottom: 3rem;
+  z-index: 1;
+}
+
+.section-main-title {
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin-top: 0.5rem;
+}
+
+/* --- New Constellation Skills Section --- */
 #skills {
   /* background-color: var(--background-color); */ /* Dihapus agar transparan */
   min-height: 90vh;
 }
+
+.skills-title::before {
+  content: '01';
+  position: absolute;
+  left: -2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  font-weight: 700;
+  color: rgba(224, 224, 224, 0.05);
+  z-index: -1;
+  line-height: 1;
+}
+
 
 /* Filter Buttons */
 .skill-filters {
@@ -611,8 +646,34 @@ section {
   overflow: hidden;
 }
 
-.experience-sticky-container .section-title {
-  margin-bottom: 1rem;
+.experience-title-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.experience-title-top, .experience-title-bottom {
+  position: absolute;
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 700;
+  color: rgba(224, 224, 224, 0.1);
+  line-height: 1;
+  margin: 0;
+}
+
+.experience-title-top {
+  top: 5%;
+  left: 5%;
+}
+
+.experience-title-bottom {
+  bottom: 5%;
+  right: 5%;
 }
 
 .experience-track-wrapper {

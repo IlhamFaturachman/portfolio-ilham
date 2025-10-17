@@ -145,7 +145,10 @@ export const Skills = () => {
   return (
     <section id="skills">
       <div className="container">
-        <h2 className="section-title">Konstelasi Keahlian</h2>
+        <div className="section-title-wrapper skills-title">
+          <h2 className="section-main-title">Konstelasi Keahlian</h2>
+          <p className="section-subtitle">Jelajahi peta bintang dari kemampuan teknis saya yang saling terhubung.</p>
+        </div>
           <div className="skill-filters" role="tablist" aria-label="Filter Keahlian">
             {categories.map(category => (
               <button
