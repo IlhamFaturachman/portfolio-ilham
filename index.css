@@ -149,20 +149,70 @@ body {
   color: var(--primary-color);
 }
 
-/* Hero Section */
-.hero {
+/* --- New Interactive Hero & About Section --- */
+#hero-about {
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 2;
+  perspective: 1500px;
+}
+
+.hero-flipper-container {
+  width: 100%;
+  max-width: 900px;
+  height: 450px;
+}
+
+.hero-flipper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s ease-in-out;
+}
+
+.hero-flipper.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.hero-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 0 1rem;
-  position: relative;
-  z-index: 2; /* Pastikan konten hero di atas efek latar belakang */
+  
+  padding: 2.5rem;
+  background-color: rgba(30, 30, 30, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.hero h1 {
+.hero-face-front {
+  flex-direction: column;
+}
+
+.hero-face-back {
+  flex-direction: row;
+  gap: 2rem;
+  transform: rotateY(180deg);
+  text-align: left;
+  align-items: center;
+}
+
+.hero-face h1 {
   font-size: 3.5rem;
   margin-bottom: 0.5rem;
   background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
@@ -171,11 +221,68 @@ body {
   background-clip: text;
 }
 
-.hero p {
-  font-size: 1.2rem;
+.hero-face p {
+  font-size: 1.1rem;
   color: var(--text-secondary);
   max-width: 600px;
   margin: 0.5rem 0;
+}
+
+.about-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--primary-color);
+  box-shadow: 0 0 20px rgba(187, 134, 252, 0.4);
+  flex-shrink: 0;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-content h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.about-content p {
+  font-size: 0.95rem;
+  max-width: 100%;
+}
+
+
+.flip-button {
+  position: absolute;
+  bottom: 25px;
+  background: transparent;
+  border: 1px solid var(--text-secondary);
+  color: var(--text-secondary);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+.flip-button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border-color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.flip-button.next {
+  right: 25px;
+}
+.flip-button.back {
+  left: 25px;
 }
 
 /* General Section Styling */
@@ -184,6 +291,7 @@ section {
   position: relative;
   z-index: 2;
   overflow: hidden; /* Prevent content from breaking out */
+  scroll-margin-top: 80px;
 }
 
 .section-title {
@@ -192,14 +300,6 @@ section {
   margin-bottom: 3rem;
   color: var(--primary-color);
   font-weight: 600;
-}
-
-/* About Section */
-#about p {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-  color: var(--text-secondary);
 }
 
 /* New Constellation Skills Section */
@@ -809,12 +909,39 @@ footer {
   .nav-menu {
     display: none; /* Simplest solution for now, could be replaced with a hamburger menu */
   }
-  .hero h1 {
+  .hero-face h1 {
     font-size: 2.5rem;
   }
-  .hero p {
+  .hero-face p {
     font-size: 1rem;
   }
+  #hero-about {
+    perspective: none; /* Disable 3D on smaller screens for simplicity */
+  }
+  .hero-flipper-container {
+    height: auto;
+    min-height: 80vh;
+  }
+  .hero-face-back {
+    flex-direction: column;
+    text-align: center;
+  }
+  .about-content h2 {
+    margin-top: 1rem;
+  }
+  .about-content p {
+    text-align: center;
+  }
+  .flip-button.back {
+    bottom: auto;
+    top: 15px;
+    left: 15px;
+  }
+   .flip-button.next {
+    bottom: 15px;
+    right: 15px;
+  }
+
   section {
     padding: 4rem 0;
   }

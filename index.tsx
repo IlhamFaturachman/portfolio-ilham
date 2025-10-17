@@ -4,8 +4,7 @@
 */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Hero } from './Hero.js';
-import { About } from './About.js';
+import { HeroAbout } from './HeroAbout.js';
 import { Skills } from './Skills.js';
 import { Experience } from './Experience.js';
 import { Portfolio } from './Portfolio.js';
@@ -23,9 +22,8 @@ const Header = ({ isScrolled }) => (
   <header className={`app-header ${isScrolled ? 'header-scrolled' : ''}`}>
     <div className="container">
       <nav className="navbar">
-        <a href="#hero" className="nav-logo">Ilham Faturachman</a>
+        <a href="#hero-about" className="nav-logo">Ilham Faturachman</a>
         <ul className="nav-menu">
-          <li className="nav-item"><a href="#about" className="nav-link">Tentang Saya</a></li>
           <li className="nav-item"><a href="#skills" className="nav-link">Keahlian</a></li>
           <li className="nav-item"><a href="#experience" className="nav-link">Pengalaman</a></li>
           <li className="nav-item"><a href="#portfolio" className="nav-link">Proyek</a></li>
@@ -140,8 +138,7 @@ function App() {
       ))}
       <Header isScrolled={isScrolled} />
       <main>
-        <Hero />
-        <About />
+        <HeroAbout />
         <Skills />
         <Experience />
         <Portfolio />
