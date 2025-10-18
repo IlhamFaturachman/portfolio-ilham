@@ -23,6 +23,7 @@ const ReactiveParticleFormation = () => {
     const MOUSE_REPEL_RADIUS = 120;
     const MOUSE_REPEL_STRENGTH = 0.5;
     let animationFrameId: number;
+    let needsResize = true; // Flag to sync resize with animation frame
 
     let particles: { x: number; y: number; vx: number; vy: number; radius: number }[] = [];
     
@@ -49,6 +50,13 @@ const ReactiveParticleFormation = () => {
     };
 
     const animate = () => {
+      // Handle resizing at the beginning of the animation loop
+      // This prevents the ResizeObserver callback from causing a synchronous loop
+      if (needsResize) {
+        initialize();
+        needsResize = false;
+      }
+
       if (particles.length === 0 || canvas.width === 0 || canvas.height === 0) {
         animationFrameId = requestAnimationFrame(animate);
         return;
@@ -113,7 +121,7 @@ const ReactiveParticleFormation = () => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    initialize();
+    // Start the animation loop. Initialization will happen on the first frame.
     animate();
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -131,7 +139,9 @@ const ReactiveParticleFormation = () => {
     container.addEventListener('mouseleave', handleMouseLeave);
     
     const resizeObserver = new ResizeObserver(() => {
-      initialize();
+      // Instead of running resize logic here, just set a flag.
+      // The animation loop will pick it up.
+      needsResize = true;
     });
     resizeObserver.observe(container);
 
@@ -260,10 +270,11 @@ export const Contact = () => {
             <ReactiveParticleFormation />
             <h3>Atau Hubungi Langsung</h3>
             <div className="social-links">
-              <a href="#" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
-              <a href="#" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
-              <a href="#" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>
-              <a href="mailto:emailanda@example.com" aria-label="Email"><i className="fas fa-envelope"></i></a>
+              <a href="https://github.com/IlhamFaturachman" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
+              <a href="https://www.linkedin.com/in/ilham-faturachman-32a767266/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
+              <a href="https://www.instagram.com/1lham.fr/" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+              <a href="https://wa.me/6282333497006" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><i className="fab fa-whatsapp"></i></a>
+              <a href="mailto:ilhamfatur46@gmail.com" aria-label="Email"><i className="fas fa-envelope"></i></a>
             </div>
           </div>
         </div>
